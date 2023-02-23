@@ -1,6 +1,5 @@
-import '~/styles/globals.css'
-
 import { MantineProvider, type MantineProviderProps } from '@mantine/core'
+import { ModalsProvider } from '@mantine/modals'
 import { NotificationsProvider } from '@mantine/notifications'
 import { type AppType } from 'next/app'
 import { type Session } from 'next-auth'
@@ -20,7 +19,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <SessionProvider session={session}>
       <MantineProvider theme={mantineTheme} withGlobalStyles withNormalizeCSS>
         <NotificationsProvider>
-          <Component {...pageProps} />
+          <ModalsProvider modalProps={{ centered: true }}>
+            <Component {...pageProps} />
+          </ModalsProvider>
         </NotificationsProvider>
       </MantineProvider>
     </SessionProvider>

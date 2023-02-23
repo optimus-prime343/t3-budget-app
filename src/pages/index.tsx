@@ -2,9 +2,10 @@ import { LoadingOverlay } from '@mantine/core'
 import { useSession } from 'next-auth/react'
 
 import { LoginView } from '~/components/auth/login-view'
+import { Navbar } from '~/components/layouts/navbar'
 
 export default function HomePage() {
-  const { data: session, status } = useSession()
+  const { status } = useSession()
   if (status === 'loading') {
     return (
       <LoadingOverlay
@@ -16,8 +17,8 @@ export default function HomePage() {
   }
   if (status === 'unauthenticated') return <LoginView />
   return (
-    <div>
-      <pre>{JSON.stringify(session, null, 4)}</pre>
-    </div>
+    <>
+      <Navbar />
+    </>
   )
 }
