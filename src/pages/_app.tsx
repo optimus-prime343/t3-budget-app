@@ -18,7 +18,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <SessionProvider session={session}>
       <MantineProvider theme={mantineTheme} withGlobalStyles withNormalizeCSS>
-        <NotificationsProvider>
+        <NotificationsProvider position='top-center'>
           <ModalsProvider modalProps={{ centered: true }}>
             <Component {...pageProps} />
           </ModalsProvider>

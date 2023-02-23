@@ -1,9 +1,13 @@
 import { Button, NumberInput, Stack, TextInput } from '@mantine/core'
 import { useForm, zodResolver } from '@mantine/form'
+import { closeAllModals } from '@mantine/modals'
+import { showNotification } from '@mantine/notifications'
 
 import { type BudgetFormData, BudgetSchema } from '~/schemas/budget-schema'
+import { api } from '~/utils/api'
 
 export function BudgetForm() {
+  const createBudget = api.budget.create.useMutation()
   const form = useForm<BudgetFormData>({
     initialValues: {
       title: '',
@@ -12,7 +16,16 @@ export function BudgetForm() {
     validate: zodResolver(BudgetSchema),
   })
   const handleSubmit = (values: BudgetFormData) => {
-    console.log(values)
+    createBudget.mutate(values, {
+      onSuccess: () => {
+        showNotification({ message: 'Budget created successfully' })
+        form.reset()
+      },
+      onError: error => {
+        showNotification({ message: error.message, color: 'red' })
+      },
+      onSettled: () => closeAllModals(),
+    })
   }
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -29,7 +42,11 @@ export function BudgetForm() {
           withAsterisk
           {...form.getInputProps('maxSpending')}
         />
-        <Button disabled={!form.isValid()} type='submit'>
+        <Button
+          disabled={!form.isValid()}
+          loading={createBudget.isLoading}
+          type='submit'
+        >
           Add Budget
         </Button>
       </Stack>
