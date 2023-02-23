@@ -1,6 +1,7 @@
 import '~/styles/globals.css'
 
-import { MantineProvider } from '@mantine/core'
+import { MantineProvider, type MantineProviderProps } from '@mantine/core'
+import { NotificationsProvider } from '@mantine/notifications'
 import { type AppType } from 'next/app'
 import { type Session } from 'next-auth'
 import { SessionProvider } from 'next-auth/react'
@@ -11,10 +12,16 @@ const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
+  const mantineTheme: MantineProviderProps['theme'] = {
+    colorScheme: 'dark',
+    primaryColor: 'indigo',
+  }
   return (
     <SessionProvider session={session}>
-      <MantineProvider withGlobalStyles withNormalizeCSS>
-        <Component {...pageProps} />
+      <MantineProvider theme={mantineTheme} withGlobalStyles withNormalizeCSS>
+        <NotificationsProvider>
+          <Component {...pageProps} />
+        </NotificationsProvider>
       </MantineProvider>
     </SessionProvider>
   )

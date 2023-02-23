@@ -2,7 +2,9 @@
 module.exports = {
   overrides: [
     {
-      extends: ['plugin:@typescript-eslint/recommended-requiring-type-checking'],
+      extends: [
+        'plugin:@typescript-eslint/recommended-requiring-type-checking',
+      ],
       files: ['*.ts', '*.tsx'],
       parserOptions: {
         project: 'tsconfig.json',
@@ -21,6 +23,12 @@ module.exports = {
       {
         prefer: 'type-imports',
         fixStyle: 'inline-type-imports',
+      },
+    ],
+    '@typescript-eslint/no-misused-promises': [
+      'error',
+      {
+        checksVoidReturn: false,
       },
     ],
     'react/jsx-sort-props': 'error',
