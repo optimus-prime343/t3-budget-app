@@ -1,0 +1,15 @@
+# Set the version of docker compose to use
+version: '3.9'
+
+# The containers that compose the project
+services:
+  db:
+    image: postgres:13
+    restart: always
+    container_name: t3-budget-app-db
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: t3-budget-app
+      POSTGRES_PASSWORD: t3-budget-app
+      POSTGRES_DB: t3-budget-app
