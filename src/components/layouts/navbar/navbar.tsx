@@ -38,7 +38,9 @@ export function Navbar() {
   const items = (
     <>
       <Button onClick={handleAddBudget}>Add Budget</Button>
-      <Button onClick={handleAddExpense}>Add Expense</Button>
+      <Button onClick={handleAddExpense} variant='outline'>
+        Add Expense
+      </Button>
     </>
   )
   return (
