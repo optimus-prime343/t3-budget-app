@@ -19,6 +19,8 @@ export function ExpenseItem({ expense }: ExpenseItemProps) {
       {
         onSuccess: async () => {
           await utils.expense.read.invalidate({ budgetId: expense.budgetId })
+          await utils.expense.getTotalExpens.invalidate()
+          await utils.budget.getTotalBudget.invalidate()
         },
         onError: error => {
           showNotification({
