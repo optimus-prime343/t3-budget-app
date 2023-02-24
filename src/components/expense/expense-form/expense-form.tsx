@@ -6,7 +6,10 @@ import { showNotification } from '@mantine/notifications'
 import { type ExpenseFormData, ExpenseSchema } from '~/schemas/expense-schema'
 import { api } from '~/utils/api'
 
-export function ExpenseForm() {
+export type ExpenseFormProps = {
+  budgetId?: string
+}
+export function ExpenseForm({ budgetId }: ExpenseFormProps) {
   const { data: budgets } = api.budget.read.useQuery()
   const createExpense = api.expense.create.useMutation()
 
@@ -14,7 +17,7 @@ export function ExpenseForm() {
     initialValues: {
       title: '',
       amount: 0,
-      budgetId: '',
+      budgetId: budgetId ?? '',
     },
     validate: zodResolver(ExpenseSchema),
   })
@@ -57,13 +60,15 @@ export function ExpenseForm() {
           withAsterisk
           {...form.getInputProps('amount')}
         />
-        <Select
-          data={selectBudetData}
-          label='Budget category'
-          placeholder='Select budget category'
-          withAsterisk
-          {...form.getInputProps('budgetId')}
-        />
+        {budgetId === undefined ? (
+          <Select
+            data={selectBudetData}
+            label='Budget category'
+            placeholder='Select budget category'
+            withAsterisk
+            {...form.getInputProps('budgetId')}
+          />
+        ) : null}
         <Button
           disabled={!form.isValid()}
           loading={createExpense.isLoading}

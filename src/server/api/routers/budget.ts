@@ -20,9 +20,6 @@ export const budgetRouter = createTRPCRouter({
       where: {
         userId: ctx.session.user.id,
       },
-      include: {
-        expenses: true,
-      },
     })
     return budgets
   }),

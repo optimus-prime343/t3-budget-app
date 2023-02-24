@@ -45,7 +45,7 @@ export function Navbar() {
     </>
   )
   return (
-    <Header className={classes.root} height={HEADER_HEIGHT} mb={120}>
+    <Header className={classes.root} height={HEADER_HEIGHT} mb={8}>
       <Box className={classes.header}>
         <Link className={classes.link} href='/'>
           <Title order={4}>T3 BUDGET APP</Title>
