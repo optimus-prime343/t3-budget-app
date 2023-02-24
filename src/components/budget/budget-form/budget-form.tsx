@@ -7,6 +7,7 @@ import { type BudgetFormData, BudgetSchema } from '~/schemas/budget-schema'
 import { api } from '~/utils/api'
 
 export function BudgetForm() {
+  const utils = api.useContext()
   const createBudget = api.budget.create.useMutation()
   const form = useForm<BudgetFormData>({
     initialValues: {
@@ -17,8 +18,9 @@ export function BudgetForm() {
   })
   const handleSubmit = (values: BudgetFormData) => {
     createBudget.mutate(values, {
-      onSuccess: () => {
+      onSuccess: async () => {
         showNotification({ message: 'Budget created successfully' })
+        await utils.budget.read.invalidate()
         form.reset()
       },
       onError: error => {

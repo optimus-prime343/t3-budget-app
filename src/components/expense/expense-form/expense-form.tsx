@@ -10,6 +10,7 @@ export type ExpenseFormProps = {
   budgetId?: string
 }
 export function ExpenseForm({ budgetId }: ExpenseFormProps) {
+  const utils = api.useContext()
   const { data: budgets } = api.budget.read.useQuery()
   const createExpense = api.expense.create.useMutation()
 
@@ -28,11 +29,12 @@ export function ExpenseForm({ budgetId }: ExpenseFormProps) {
 
   const handleSubmit = (values: ExpenseFormData) => {
     createExpense.mutate(values, {
-      onSuccess: () => {
+      onSuccess: async () => {
         showNotification({
           title: 'Expense added',
           message: 'Expense has been added successfully',
         })
+        await utils.expense.read.invalidate()
         form.reset()
       },
       onError: error => {
@@ -60,15 +62,13 @@ export function ExpenseForm({ budgetId }: ExpenseFormProps) {
           withAsterisk
           {...form.getInputProps('amount')}
         />
-        {budgetId === undefined ? (
-          <Select
-            data={selectBudetData}
-            label='Budget category'
-            placeholder='Select budget category'
-            withAsterisk
-            {...form.getInputProps('budgetId')}
-          />
-        ) : null}
+        <Select
+          data={selectBudetData}
+          label='Budget category'
+          placeholder='Select budget category'
+          withAsterisk
+          {...form.getInputProps('budgetId')}
+        />
         <Button
           disabled={!form.isValid()}
           loading={createExpense.isLoading}
