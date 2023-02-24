@@ -6,6 +6,7 @@ import {
   Group,
   Header,
   Paper,
+  Stack,
   Title,
   Transition,
 } from '@mantine/core'
@@ -62,8 +63,13 @@ export function Navbar() {
 
         <Transition duration={200} mounted={opened} transition='pop-top-right'>
           {styles => (
-            <Paper className={classes.dropdown} style={styles} withBorder>
-              {items}
+            <Paper
+              className={classes.dropdown}
+              p='md'
+              style={styles}
+              withBorder
+            >
+              <Stack spacing='xs'>{items}</Stack>
             </Paper>
           )}
         </Transition>
