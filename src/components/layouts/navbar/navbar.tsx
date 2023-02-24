@@ -11,8 +11,9 @@ import {
   Transition,
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { openModal } from '@mantine/modals'
+import { openConfirmModal, openModal } from '@mantine/modals'
 import Link from 'next/link'
+import { signOut } from 'next-auth/react'
 
 import { BudgetForm } from '~/components/budget/budget-form'
 import { ExpenseForm } from '~/components/expense/expense-form'
@@ -36,12 +37,26 @@ export function Navbar() {
       children: <ExpenseForm />,
     })
   }
+  const handleLogout = () => {
+    openConfirmModal({
+      title: 'Logout',
+      children: 'Are you sure you want to logout?',
+      onConfirm: () => signOut({ redirect: false }),
+      labels: {
+        confirm: 'Logout',
+        cancel: 'Cancel',
+      },
+    })
+  }
 
   const items = (
     <>
       <Button onClick={handleAddBudget}>Add Budget</Button>
       <Button onClick={handleAddExpense} variant='outline'>
         Add Expense
+      </Button>
+      <Button color='red' onClick={handleLogout} variant='outline'>
+        Logout
       </Button>
     </>
   )
@@ -51,7 +66,7 @@ export function Navbar() {
         <Link className={classes.link} href='/'>
           <Title order={4}>T3 BUDGET APP</Title>
         </Link>
-        <Group className={classes.links} spacing={5}>
+        <Group className={classes.links} spacing='sm'>
           {items}
         </Group>
         <Burger
