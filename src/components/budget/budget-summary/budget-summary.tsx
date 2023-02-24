@@ -7,7 +7,7 @@ import {
   Title,
 } from '@mantine/core'
 
-import { SpendingRatio } from '~/components/common/spending-ration'
+import { SpendingRatio } from '~/components/common/spending-ratio'
 import { api } from '~/utils/api'
 
 export function BudgetSummary() {

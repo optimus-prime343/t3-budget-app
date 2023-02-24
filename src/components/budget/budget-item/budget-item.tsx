@@ -11,7 +11,7 @@ import {
 import { openModal } from '@mantine/modals'
 import { type Budget } from '@prisma/client'
 
-import { SpendingRatio } from '~/components/common/spending-ration/spending-radio'
+import { SpendingRatio } from '~/components/common/spending-ratio/spending-ratio'
 import { ExpenseForm } from '~/components/expense/expense-form'
 import { ExpenseList } from '~/components/expense/expense-list'
 import { api } from '~/utils/api'
