@@ -1,0 +1,18 @@
+import { ExpenseSchema } from '~/schemas/expense-schema'
+import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc'
+
+export const expenseRouter = createTRPCRouter({
+  create: protectedProcedure
+    .input(ExpenseSchema)
+    .mutation(async ({ ctx, input }) => {
+      const { title, amount, budgetId } = input
+      const expense = await ctx.prisma.expense.create({
+        data: {
+          title,
+          amount,
+          budgetId,
+        },
+      })
+      return expense
+    }),
+})

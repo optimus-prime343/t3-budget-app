@@ -15,4 +15,15 @@ export const budgetRouter = createTRPCRouter({
       })
       return budget
     }),
+  read: protectedProcedure.query(async ({ ctx }) => {
+    const budgets = await ctx.prisma.budget.findMany({
+      where: {
+        userId: ctx.session.user.id,
+      },
+      include: {
+        expenses: true,
+      },
+    })
+    return budgets
+  }),
 })

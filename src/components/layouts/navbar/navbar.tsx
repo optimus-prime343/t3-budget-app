@@ -14,6 +14,7 @@ import { openModal } from '@mantine/modals'
 import Link from 'next/link'
 
 import { BudgetForm } from '~/components/budget/budget-form'
+import { ExpenseForm } from '~/components/expense/expense-form'
 
 const HEADER_HEIGHT = 60
 
@@ -31,7 +32,7 @@ export function Navbar() {
   const handleAddExpense = () => {
     openModal({
       title: 'Add Expense',
-      children: <BudgetForm />,
+      children: <ExpenseForm />,
     })
   }
 
