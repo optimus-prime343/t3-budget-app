@@ -8,7 +8,7 @@ export type BudgetListProps = {
 }
 export function BudgetList({ budgets }: BudgetListProps) {
   return (
-    <Grid>
+    <Grid sx={{ flex: 1 }}>
       {budgets.map(budget => (
         <Grid.Col key={budget.id} lg={4} md={6} sm={12}>
           <BudgetItem budget={budget} />
