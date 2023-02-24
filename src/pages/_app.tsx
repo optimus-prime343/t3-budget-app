@@ -13,7 +13,6 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   const mantineTheme: MantineProviderProps['theme'] = {
     colorScheme: 'dark',
-    primaryColor: 'indigo',
   }
   return (
     <SessionProvider session={session}>

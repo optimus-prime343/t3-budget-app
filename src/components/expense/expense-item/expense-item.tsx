@@ -1,34 +1,51 @@
-import { ActionIcon, Badge, Box, createStyles, Flex, Text } from '@mantine/core'
+import { ActionIcon, Badge, Box, Flex, Text } from '@mantine/core'
+import { showNotification } from '@mantine/notifications'
 import { type Expense } from '@prisma/client'
 import { IconTrash } from '@tabler/icons-react'
 
+import { api } from '~/utils/api'
 import { formatCurrency } from '~/utils/format-currency'
 
 export type ExpenseItemProps = {
   expense: Expense
 }
 export function ExpenseItem({ expense }: ExpenseItemProps) {
-  const { classes } = useStyles()
+  const utils = api.useContext()
+  const deleteExpense = api.expense.delete.useMutation()
+
+  const handleDeleteExpense = () => {
+    deleteExpense.mutate(
+      { expenseId: expense.id },
+      {
+        onSuccess: async () => {
+          await utils.expense.read.invalidate({ budgetId: expense.budgetId })
+        },
+        onError: error => {
+          showNotification({
+            title: 'Error',
+            message: error.message,
+            color: 'red',
+          })
+        },
+      }
+    )
+  }
+  if (deleteExpense.isSuccess) return null
   return (
-    <Box className={classes.expenseItem} key={expense.id}>
+    <Box>
       <Badge sx={{ alignSelf: 'flex-start' }}>
         {formatCurrency(expense.amount)}
       </Badge>
       <Flex justify='space-between'>
         <Text>{expense.title}</Text>
-        <ActionIcon variant='filled'>
+        <ActionIcon
+          loading={deleteExpense.isLoading}
+          onClick={handleDeleteExpense}
+          variant='filled'
+        >
           <IconTrash />
         </ActionIcon>
       </Flex>
     </Box>
   )
 }
-const useStyles = createStyles(theme => ({
-  expenseItem: {
-    backgroundColor:
-      theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
-    paddingInline: theme.spacing.md,
-    paddingBottom: theme.spacing.xs,
-    borderRadius: theme.radius.xs,
-  },
-}))

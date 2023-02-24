@@ -19,7 +19,6 @@ export function BudgetForm() {
   const handleSubmit = (values: BudgetFormData) => {
     createBudget.mutate(values, {
       onSuccess: async () => {
-        showNotification({ message: 'Budget created successfully' })
         await utils.budget.read.invalidate()
         form.reset()
       },

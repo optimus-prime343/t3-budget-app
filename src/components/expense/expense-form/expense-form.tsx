@@ -30,10 +30,6 @@ export function ExpenseForm({ budgetId }: ExpenseFormProps) {
   const handleSubmit = (values: ExpenseFormData) => {
     createExpense.mutate(values, {
       onSuccess: async () => {
-        showNotification({
-          title: 'Expense added',
-          message: 'Expense has been added successfully',
-        })
         await utils.expense.read.invalidate()
         form.reset()
       },

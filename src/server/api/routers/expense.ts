@@ -31,4 +31,18 @@ export const expenseRouter = createTRPCRouter({
       })
       return expenses
     }),
+  delete: protectedProcedure
+    .input(z.object({ expenseId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const { expenseId } = input
+      const expense = await ctx.prisma.expense.findFirstOrThrow({
+        where: {
+          id: expenseId,
+          Budget: {
+            userId: ctx.session.user.id,
+          },
+        },
+      })
+      await ctx.prisma.expense.delete({ where: { id: expense.id } })
+    }),
 })
