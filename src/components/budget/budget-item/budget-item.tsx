@@ -2,19 +2,19 @@ import {
   Box,
   Button,
   createStyles,
+  Divider,
   Group,
   Progress,
   Stack,
-  Text,
   Title,
 } from '@mantine/core'
 import { openModal } from '@mantine/modals'
 import { type Budget } from '@prisma/client'
 
+import { SpendingRatio } from '~/components/common/spending-ration/spending-radio'
 import { ExpenseForm } from '~/components/expense/expense-form'
 import { ExpenseList } from '~/components/expense/expense-list'
 import { api } from '~/utils/api'
-import { formatCurrency } from '~/utils/format-currency'
 
 export type BudgetItemProps = {
   budget: Budget
@@ -47,12 +47,12 @@ export function BudgetItem({ budget }: BudgetItemProps) {
     <Stack className={classes.container}>
       <Box className={classes.expenseInfo}>
         <Title order={4}>{budget.title}</Title>
-        <Text>
-          <Text component='span'>{formatCurrency(totalExpense)}</Text>
-          <Text component='span'> / </Text>
-          <Text component='span'>{formatCurrency(budget.maxSpending)}</Text>
-        </Text>
+        <SpendingRatio
+          currentSpending={totalExpense}
+          maxSpending={budget.maxSpending}
+        />
       </Box>
+      <Divider />
       <Progress color={progressColor} value={progress} />
       <Group spacing='xs'>
         <Button onClick={handleAddExpense}>Add Expense</Button>

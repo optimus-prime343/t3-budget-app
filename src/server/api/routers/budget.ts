@@ -23,4 +23,15 @@ export const budgetRouter = createTRPCRouter({
     })
     return budgets
   }),
+  getTotalBudget: protectedProcedure.query(async ({ ctx }) => {
+    const budgetAggregation = await ctx.prisma.budget.aggregate({
+      where: {
+        userId: ctx.session.user.id,
+      },
+      _sum: {
+        maxSpending: true,
+      },
+    })
+    return budgetAggregation._sum.maxSpending ?? 0
+  }),
 })

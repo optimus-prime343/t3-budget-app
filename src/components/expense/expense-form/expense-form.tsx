@@ -31,6 +31,7 @@ export function ExpenseForm({ budgetId }: ExpenseFormProps) {
     createExpense.mutate(values, {
       onSuccess: async () => {
         await utils.expense.read.invalidate()
+        await utils.expense.getTotalExpens.invalidate()
         form.reset()
       },
       onError: error => {

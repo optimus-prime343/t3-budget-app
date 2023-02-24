@@ -20,6 +20,7 @@ export function BudgetForm() {
     createBudget.mutate(values, {
       onSuccess: async () => {
         await utils.budget.read.invalidate()
+        await utils.budget.getTotalBudget.invalidate()
         form.reset()
       },
       onError: error => {

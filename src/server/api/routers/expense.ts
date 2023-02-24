@@ -45,4 +45,17 @@ export const expenseRouter = createTRPCRouter({
       })
       await ctx.prisma.expense.delete({ where: { id: expense.id } })
     }),
+  getTotalExpens: protectedProcedure.query(async ({ ctx }) => {
+    const amountAggregation = await ctx.prisma.expense.aggregate({
+      where: {
+        Budget: {
+          userId: ctx.session.user.id,
+        },
+      },
+      _sum: {
+        amount: true,
+      },
+    })
+    return amountAggregation._sum.amount ?? 0
+  }),
 })

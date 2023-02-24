@@ -1,8 +1,9 @@
-import { Box, LoadingOverlay } from '@mantine/core'
+import { Box, Flex, LoadingOverlay } from '@mantine/core'
 import { useSession } from 'next-auth/react'
 
 import { LoginView } from '~/components/auth/login-view'
 import { BudgetList } from '~/components/budget/budget-list'
+import { BudgetSummary } from '~/components/budget/budget-summary'
 import { Navbar } from '~/components/layouts/navbar'
 import { api } from '~/utils/api'
 
@@ -22,9 +23,17 @@ export default function HomePage() {
   return (
     <>
       <Navbar />
-      <Box px='md' py='xs'>
+      <Flex
+        direction={{ base: 'column-reverse', sm: 'row' }}
+        gap='md'
+        px='md'
+        py='xs'
+      >
         <BudgetList budgets={budgets} />
-      </Box>
+        <Box miw={{ base: '100%', sm: '25rem' }}>
+          <BudgetSummary />
+        </Box>
+      </Flex>
     </>
   )
 }
